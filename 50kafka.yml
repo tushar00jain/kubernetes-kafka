@@ -5,7 +5,7 @@ metadata:
   namespace: kafka
 spec:
   serviceName: "broker"
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
@@ -43,7 +43,7 @@ spec:
         - --override
         -   log.dirs=/var/lib/kafka/data/topics
         - --override
-        -   auto.create.topics.enable=false
+        -   auto.create.topics.enable=true
         resources:
           requests:
             cpu: 100m
@@ -70,4 +70,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 200Gi
+          storage: 10Gi

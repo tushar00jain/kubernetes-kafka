@@ -1,4 +1,18 @@
+# Demo with Node.js 
 
+```
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker build -f ./test/Dockerfile -t client ./test
+docker tag client localhost:5000/client:0.0.1
+
+kubectl apply -f ./zookeeper
+kubectl apply -f ./
+kubectl apply -f ./test
+
+kubectl exec -ti basic-produce-consume-xxxxxxxxxx-xxxxx --namespace test-kafka -- bash
+node consumer.js
+node producer.js
+```
 
 # Kafka on Kubernetes
 

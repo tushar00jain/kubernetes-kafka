@@ -9,12 +9,12 @@ data:
   setup.sh: |-
     touch /tmp/testlog
 
-    ./bin/kafka-topics.sh --zookeeper $ZOOKEEPER \
+    /opt/kafka/bin/kafka-topics.sh --zookeeper $ZOOKEEPER \
       --create --if-not-exists --topic test-basic-produce-consume \
       --partitions 1 --replication-factor 1
 
     # Despite the deprecation warning --zookeeper nothing is consumed when using --bootstrap-server
-    ./bin/kafka-console-consumer.sh --zookeeper $ZOOKEEPER --topic test-basic-produce-consume > /tmp/testconsumed &
+    /opt/kafka/bin/kafka-console-consumer.sh --zookeeper $ZOOKEEPER --topic test-basic-produce-consume > /tmp/testconsumed &
 
     tail -f /tmp/testlog
 
@@ -27,7 +27,7 @@ data:
 
     unique=$(date -Ins)
 
-    echo "Test $unique" | ./bin/kafka-console-producer.sh --broker-list $BOOTSTRAP --topic test-basic-produce-consume
+    echo "Test $unique" | /opt/kafka/bin/kafka-console-producer.sh --broker-list $BOOTSTRAP --topic test-basic-produce-consume
     echo ""
     tail -n 1 /tmp/testconsumed | grep $unique
 
@@ -53,10 +53,10 @@ spec:
     spec:
       containers:
       - name: testcase
-        image: solsson/kafka:0.11.0.0@sha256:b27560de08d30ebf96d12e74f80afcaca503ad4ca3103e63b1fd43a2e4c976ce
+        image: localhost:5000/client:0.0.1 
         env:
         - name: BOOTSTRAP
-          value: kafka-0.broker.kafka.svc.cluster.local:9092,kafka-1.broker.kafka.svc.cluster.local:9092,kafka-2.broker.kafka.svc.cluster.local:9092
+          value: kafka-0.broker.kafka.svc.cluster.local:9092,kafka-1.broker.kafka.svc.cluster.local:9092
         - name: ZOOKEEPER
           value: zookeeper.kafka.svc.cluster.local:2181
         # Test set up
